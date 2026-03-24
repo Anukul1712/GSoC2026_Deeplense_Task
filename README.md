@@ -20,6 +20,7 @@ cold dark matter subhalo substructure or axion-like particle (vortex) substructu
 
 ```
 GSoC2026_Deeplense_Task/
+├── Results_and_Images                       # Contains Results and Images regarding every Task
 ├── Deeplense_CommonTask_Comparison.ipynb    # Task I:   Multi-class classification (3 models compared)
 ├── PINN_Classification50Epoch_TaskVII.ipynb # Task VII: Physics-informed neural network
 ├── TaskIX_FoundationModel.ipynb             # Task IX.A & IX.B: MAE pre-training, classification, super-resolution
@@ -58,7 +59,7 @@ pretrained input expectations. Augmentation included random 10-degree rotations 
 
 ## Task VII: Physics-Guided ML (Specific Test)
 
-**Objective:** Build a Physics-Informed Neural Network (PINN) whose architecture embeds the gravitational lensing equation as a structural forward pass, improving upon the Common Test baseline.
+**Objective:** Build a Physics-Informed Neural Network (PINN) whose architecture embeds the gravitational lensing equation into the forward pass, improving upon the Common Test baseline.
 
 **Dataset:** Same three-class lensing dataset. Images are 150x150 single-channel `.npy` files. Split: 27,000 train / 3,000 internal test (10% holdout) / 7,500 provided val folder.
 
@@ -76,7 +77,7 @@ The PINN does not merely add a physics penalty to a standard classifier. The len
 
 **4. Lensing warp (LensWarp):** Implements the lens equation `beta = theta - alpha(theta)` as a differentiable grid sampling operation. A source image is decoded from features, then warped through the predicted deflection field to reconstruct the observed image.
 
-**5. Anomaly residual branch:** `residual = |I_obs - I_recon|`. This difference map isolates substructure signal not explained by the smooth SIS potential. A compact CNN encoder converts it to a 128-dim feature vector.
+**5. Anomaly residual branch:** `residual = |I_obs - I_recon|`. This difference map isolates the substructure signal not explained by the smooth SIS potential. A compact CNN encoder converts it to a 128-dim feature vector.
 
 **6. Polar coordinate branch:** A differentiable polar transform maps the input to polar coordinates, exploiting the approximate circular symmetry of gravitational lensing. A separate CNN encoder produces a 128-dim polar feature vector.
 
@@ -86,7 +87,7 @@ The PINN does not merely add a physics penalty to a standard classifier. The len
 
 ### Model Pipeline
 
-![PINN Pipeline](Results_and_Images/PINNLenseNet_Pipeline.png)
+
 
 ### Physics Losses
 
@@ -183,7 +184,7 @@ MAE reconstruction loss converged from 0.2636 (epoch 1) to 0.0023 (epoch 15).
 
 A two-stage fine-tuning strategy was applied to preserve pre-trained representations:
 
-**Stage 1 - Head warm-up (5 epochs):** Encoder frozen. Only the CLS token and linear head trained at lr=1e-3. Prevents random-head gradients from corrupting the encoder on the first pass.
+**Stage 1 - Head warm-up (5 epochs):** Encoder frozen. Only the CLS token and linear head were trained at lr=1e-3. Prevents random-head gradients from corrupting the encoder on the first pass.
 
 **Stage 2 - Full fine-tuning (up to 15 epochs):** Encoder unfrozen. AdamW at lr=5e-5 with cosine annealing and early stopping on validation AUC (patience=5). Best checkpoint restored at end.
 
