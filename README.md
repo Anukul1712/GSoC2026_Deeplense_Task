@@ -2,7 +2,7 @@
 
 **Applicant:** Anukul Kumar  
 **Organization:** Machine Learning for Science (ML4SCI)  
-**Project:** DeepLense: Deep Learning for Strong Gravitational Lensing Analysis  
+**Project:** Foundation Model for Gravitational Lensing  
 **Framework:** PyTorch | **Hardware:** NVIDIA H100 (Kaggle)
 
 ---
@@ -87,7 +87,7 @@ The PINN does not merely add a physics penalty to a standard classifier. The len
 
 ### Model Pipeline
 
-
+![PINN Pipeline](Results_and_Images/PINNTaskVII_Pipeline.png)
 
 ### Physics Losses
 
@@ -158,8 +158,7 @@ A lightweight Vision Transformer (ViT) was designed from scratch and optimized f
 
 ### MAE Pipeline
 
-<!-- Add MAE pipeline diagram here: image -> patchify -> random mask (90%) -> ViT encoder (visible patches) -> mask tokens -> transformer decoder -> reconstruct masked patches -->
-<!-- Example: ![MAE Pre-training Pipeline](assets/mae_pipeline.png) -->
+![Task IX Complete Pipeline](Results_and_Images/MAETaskIX_Pipeline.png)
 
 ### Pre-training
 
@@ -176,9 +175,11 @@ The MAE was trained exclusively on `no_sub` samples without labels. The reconstr
 MAE reconstruction loss converged from 0.2636 (epoch 1) to 0.0023 (epoch 15).
 
 ### MAE Reconstruction Examples
+**Notice**: Sorry for the confusion, but the masked ratio in the examples below is 90 percent. During masked ratio testing, I forgot to update the image header and only noticed it later.
 
-<!-- Add side-by-side reconstruction comparisons: original | masked input (90%) | reconstruction -->
-<!-- Example: ![MAE Reconstruction](assets/mae_reconstruction.png) -->
+![MAE Reconstruction Example 1](Results_and_Images/MAE_Reconstruct_Ex1.png)
+![MAE Reconstruction Example 2](Results_and_Images/MAE_Reconstruct_Ex2.png)
+![MAE Reconstruction Example 3](Results_and_Images/MAE_Reconstruct_Ex3.png)
 
 ### Fine-tuning Protocol
 
@@ -207,9 +208,6 @@ A two-stage fine-tuning strategy was applied to preserve pre-trained representat
 
 Final validation accuracy: 96.1% at epoch 15 of Stage 2.
 
-<!-- Add ROC curves here (one curve per class) -->
-<!-- Example: ![ROC Curves - MAE Classifier](assets/mae_roc.png) -->
-
 ---
 
 ## Task IX.B: Foundation Model - Super-Resolution Fine-tuning
@@ -233,11 +231,6 @@ LR input -> ViT encoder (16x16 patch grid) -> SRDecoder:
 
 Total model: 3.28M parameters (562K decoder-only for Phase 1 training).
 
-### SR Pipeline
-
-<!-- Add SR pipeline diagram here: LR input -> ViT encoder -> SRDecoder -> HR output | ground truth comparison -->
-<!-- Example: ![Super-Resolution Pipeline](assets/sr_pipeline.png) -->
-
 ### Training Configuration
 
 | Phase | Epochs | Trainable Params | Optimizer | LR |
@@ -249,8 +242,7 @@ Phase 1 val MSE: 1.94e-4 (epoch 1) -> 1.00e-4 (epoch 10). Phase 2 val MSE: furth
 
 ### Qualitative Comparison
 
-<!-- Add 4-column comparison panels: LR (bicubic upscaled) | ViT-SR output | HR ground truth | |SR - HR| residual map -->
-<!-- Example: ![Super-Resolution Comparison](assets/sr_comparison.png) -->
+![Super-Resolution Comparison](Results_and_Images/SR_Output.png)
 
 ### Quantitative Results
 
