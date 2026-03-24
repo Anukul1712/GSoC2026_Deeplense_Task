@@ -16,9 +16,11 @@ I tried 75% and 90% masking for my MAE Pre-training, and here are the results fo
 ![MAE Reconstruction 75](MAE_Reconstruct_75_Ex3.png)
 
 # MAE Reconstruction with Masked Percentage of 90 percent.
-![MAE Reconstruction 90](MAE_Reconstruct_90_Ex1.png)
-![MAE Reconstruction 90](MAE_Reconstruct_90_Ex2.png)
-![MAE Reconstruction 90](MAE_Reconstruct_90_Ex3.png)
+**Notice**: Sorry for the confusion, but the masked ratio in the examples below is 90 percent. During masked ratio testing, I forgot to update the image header and only noticed it later.
+
+![MAE Reconstruction 90](MAE_Reconstruct_Ex1.png)
+![MAE Reconstruction 90](MAE_Reconstruct_Ex2.png)
+![MAE Reconstruction 90](MAE_Reconstruct_Ex3.png)
 
 # SR Task(Task IX.B) Loss Curve
 ![SR Loss Curve](LossCurve_SR_TaskIXB.png)
