@@ -54,12 +54,6 @@ pretrained input expectations. Augmentation included random 10-degree rotations 
 
 **EfficientNet-B3 was selected as the best model**, achieving 96.05% accuracy and a macro AUC of 0.9941 on the test set.
 
-<!-- Add ROC curve comparison plot here -->
-<!-- Example: ![ROC Curve - Common Test](assets/common_test_roc.png) -->
-
-<!-- Add confusion matrix here -->
-<!-- Example: ![Confusion Matrix - EfficientNet-B3](assets/common_test_cm.png) -->
-
 ---
 
 ## Task VII: Physics-Guided ML (Specific Test)
@@ -92,11 +86,7 @@ The PINN does not merely add a physics penalty to a standard classifier. The len
 
 ### Model Pipeline
 
-<!-- Add PINN architecture diagram here: input -> EfficientNet -> PotentialHead -> LensWarp -> ResidualBranch + PolarBranch -> Classifier -->
-<!-- Example: ![PINN Architecture](assets/pinn_pipeline.png) -->
-
-<!-- Add PINN visualization here: Input | Potential psi | Deflection |alpha| | Anomaly Residual | Reconstructed -->
-<!-- Example: ![PINN Visualization](assets/pinn_visualization.png) -->
+![PINN Pipeline](Results_and_Images/PINNLenseNet_Pipeline.png)
 
 ### Physics Losses
 
@@ -104,9 +94,9 @@ The training objective combines classification loss with three physics-regulariz
 
 | Loss Term | Mathematical Form | Physical Meaning |
 |---|---|---|
-| Poisson constraint | `||Delta psi_resid||^2` | Subhalo convergence `kappa_sub` should be compact |
-| Curl-free constraint | `||(d_x alpha_y - d_y alpha_x)||^2` | Deflection field must be irrotational |
-| Reconstruction | `MSE(I_recon, I_obs)` | Warped source must match observed image |
+| Poisson constraint | $\|\Delta \psi_{\text{resid}}\|^2$ | Subhalo convergence $\kappa_{\text{sub}}$ should be compact |
+| Curl-free constraint | $\| \partial_x \alpha_y - \partial_y \alpha_x \|^2$ | Deflection field must be irrotational |
+| Reconstruction | $\text{MSE}(I_{\text{recon}}, I_{\text{obs}})$ | Warped source must match observed image |
 
 ### Training Configuration
 
@@ -129,20 +119,15 @@ The training objective combines classification loss with three physics-regulariz
 
 Best checkpoint: epoch 46, val AUC 0.9893.
 
-<!-- Add per-class ROC curves here -->
-<!-- Example: ![ROC Curves - PINN](assets/pinn_roc.png) -->
-
-<!-- Add training history plots here: loss curves, physics loss components, val AUC curve, per-class AUC bar chart -->
-<!-- Example: ![PINN Training History](assets/pinn_training_history.png) -->
-
 ### Comparison with Common Test Baseline
 
-| Model | Macro AUC | Improvement |
-|---|---|---|
-| EfficientNet-B3 (Task I baseline) | 0.9941 | -- |
-| **PINNLensNet (Task VII)** | **0.9897** | Physics-constrained |
-
-The PINN achieves comparable AUC to the pure data-driven EfficientNet-B3 baseline while operating under structural physical constraints: the deflection field is curl-free by construction, the reconstruction loss enforces consistency with the lensing forward model, and the Poisson constraint regularizes the residual subhalo convergence. This represents a physically interpretable model rather than a black-box classifier.
+| Model | Macro AUC | No | Sphere | Vortex|
+|---|---|---|---|---|
+| Resnet-18(Pre-trained) | 0.9911 | 0.9858 | 0.9950 | 0.9924 |
+| EfficientNet-B3(No-Physics) | 0.9963 | 0.9960 | 0.9941 | 0.9988 |
+| EfficientNet-B3 + Recon Loss | 0.9959 | 0.9956 | 0.9931 | 0.9989 |
+| EfficientNet-B3 + SIS Prior | 0.9958 | 09962 | 0.9926 | 0.9987 |
+| **PINNLensNet ** | **0.9897** | 0.9913 | 0.9826 | 0.9941 |
 
 ---
 
