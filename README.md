@@ -40,11 +40,6 @@ GSoC2026_Deeplense_Task/
 Three pretrained ImageNet models were compared under identical training conditions (30 epochs, CrossEntropyLoss, best-val-accuracy checkpoint). Single-channel images were replicated to three channels to match 
 pretrained input expectations. Augmentation included random 10-degree rotations and horizontal flips. All models were evaluated on the held-out test set using macro ROC-AUC.
 
-### Model Pipeline
-
-<!-- Add architecture comparison diagram here -->
-<!-- Example: ![Common Test Pipeline](assets/common_test_pipeline.png) -->
-
 ### Results
 
 | Model | Accuracy | No Sub AUC | Sphere AUC | Vortex AUC | Macro AUC |
@@ -54,6 +49,7 @@ pretrained input expectations. Augmentation included random 10-degree rotations 
 | **EfficientNet-B3** | **0.9605** | **0.9946** | **0.9907** | **0.9971** | **0.9941** |
 
 **EfficientNet-B3 was selected as the best model**, achieving 96.05% accuracy and a macro AUC of 0.9941 on the test set.
+And was later use as the backbone for Task VII.
 
 ---
 
