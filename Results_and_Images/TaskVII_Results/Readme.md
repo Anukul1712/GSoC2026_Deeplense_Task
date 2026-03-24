@@ -1,5 +1,6 @@
 I tested my pipeline with two different numbers of epochs, 30 and 50.
 These are the different results for both of them.
+Reconstructions were just slightly improved, but there was a significant improvement with 50 epochs; we can still work with 30 epochs.
 
 # ROC-AUC Curve for 30 epochs
 ![ROC-AUC Curve for 30 epochs](ROC_AUC_PINN_30Epochs.png)
