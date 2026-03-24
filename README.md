@@ -18,6 +18,10 @@ This repository contains solutions to the DeepLense evaluation tasks for the Fou
 ```
 GSoC2026_Deeplense_Task/
 ├── Results_and_Images                       # Contains Results and Images regarding every Task
+    ├── CommonTask_Results
+    ├── TaskIX_results
+    ├── TaskVII_Results
+    └── Other Images...
 ├── Deeplense_CommonTask_Comparison.ipynb    # Task I:   Multi-class classification (3 models compared)
 ├── PINN_Classification50Epoch_TaskVII.ipynb # Task VII: Physics-informed neural network
 ├── TaskIX_FoundationModel.ipynb             # Task IX.A & IX.B: MAE pre-training, classification, super-resolution
@@ -46,7 +50,7 @@ pretrained input expectations. Augmentation included random 10-degree rotations 
 | **EfficientNet-B3** | **0.9605** | **0.9946** | **0.9907** | **0.9971** | **0.9941** |
 
 **EfficientNet-B3 was selected as the best model**, achieving 96.05% accuracy and a macro AUC of 0.9941 on the test set.
-And was later use as the backbone for Task VII.
+And was later used as the backbone for Task VII.
 
 ---
 
