@@ -9,10 +9,7 @@
 
 ## Overview
 
-This repository contains solutions to the DeepLense evaluation tasks for GSoC 2026. 
-Strong gravitational lensing is a powerful observational probe of dark matter substructure. The core 
-challenge across all tasks is distinguishing lensing images with no substructure from those containing 
-cold dark matter subhalo substructure or axion-like particle (vortex) substructure.
+This repository contains solutions to the DeepLense evaluation tasks for the Foundation Model Project in GSoC 2026. 
 
 ---
 
