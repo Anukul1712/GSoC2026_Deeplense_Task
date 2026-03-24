@@ -1,6 +1,6 @@
 # GSoC 2026 | ML4SCI DeepLense Evaluation Tasks
 
-**Applicant:** Anukul Kumar  
+**Applicant:** Anukul Tiwari 
 **Organization:** Machine Learning for Science (ML4SCI)  
 **Project:** Foundation Model for Gravitational Lensing  
 **Framework:** PyTorch | **Hardware:** NVIDIA H100 (Kaggle)
