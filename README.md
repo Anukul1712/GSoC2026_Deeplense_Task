@@ -287,4 +287,4 @@ All experiments were run on Kaggle with an NVIDIA H100 GPU.
 
 ## Acknowledgements
 
-This work is submitted as part of the GSoC 2026 application to the ML4SCI organization under the DeepLense project. Datasets are provided by the DeepLense team. The MAE architecture follows the self-supervised pre-training formalism of He et al. (2022), adapted and implemented from scratch for single-channel astrophysical imaging on 64x64 resolution inputs.
+This work is submitted as part of the GSoC 2026 application to the ML4SCI organization under the DeepLense project. Datasets are provided by the DeepLense team.
