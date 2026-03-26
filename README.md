@@ -60,62 +60,35 @@ And was later used as the backbone for Task VII.
 
 **Dataset:** Same three-class lensing dataset. Images are 150x150 single-channel `.npy` files. Split: 27,000 train / 3,000 internal test (10% holdout) / 7,500 provided val folder.
 
-### Architecture: PINNLensNet
+### Approaches Explored
 
-The PINN does not merely add a physics penalty to a standard classifier. The lensing equation is embedded as a differentiable computational graph within the forward pass. The full pipeline proceeds as follows:
+Three distinct PINN architectures were developed to explore the trade-offs between physical constraints and deep learning flexibility.
 
-**1. Backbone encoder:** EfficientNet-B3 (pretrained, adapted for single-channel input by averaging the first convolution weights across the channel dimension). Outputs a 1536-dim feature vector.
+#### Approach 1: Baseline PINN (ResNet-18)
+A "pure" physics-informed model that enforces the curl-free constraint of the deflection field.
+- **Backbone:** ResNet-18 (pretrained).
+- **Physics:** Predicts potential $\psi$, derived $\alpha = \nabla \psi$ (curl-free), and $\kappa = \nabla^2 \psi$.
+- **Reconstruction:** Uses the lensing equation $\beta = \theta - \alpha(\theta)$ to reconstruct the source.
+- **Classification:** Uses backbone features + physics scalars ($\theta_E$, $|\alpha|$, reconstruction error).
 
-**2. Gravitational potential head (PotentialHead):** Predicts the total lensing potential `psi_total = psi_SIS + psi_resid`.
-- `psi_SIS = theta_E * r` is a Singular Isothermal Sphere prior with a learnable Einstein radius `theta_E` predicted from the feature vector.
-- `psi_resid` is a CNN-decoded residual potential map capturing deviations from the SIS baseline (subhalo and vortex signals).
+#### Approach 2: Advanced Adaptive PINN (ResNet-18)
+Builds on Approach 1 with advanced stability and symmetry features.
+- **Adaptive Loss:** Uses a Kendall-style uncertainty loss to dynamically weight 7 different physics terms (Poisson, Curl, Reconstruction, Cycle-Consistency, etc.) during training.
+- **Symmetry:** Includes a **Polar Coordinate Branch** to exploit the circular symmetry of lenses.
+- **Cycle Consistency:** Enforces reversibility: `delens(lens(source)) ≈ source`.
 
-**3. Deflection field (curl-free by construction):** `alpha = grad(psi_total)`, computed via Sobel-kernel finite differences. Because `alpha` is derived from a scalar potential, it is structurally curl-free, satisfying a necessary condition for a physical deflection field.
+#### Approach 3: Hybrid Fusion PINN (EfficientNet-B3)
+Combines the strong feature extraction of EfficientNet with physics constraints (formerly PINNLensNet).
+- **Backbone:** EfficientNet-B3.
+- **Feature Fusion:** Concatenates Backbone Features + Physics Residual Features + Polar Features.
 
-**4. Lensing warp (LensWarp):** Implements the lens equation `beta = theta - alpha(theta)` as a differentiable grid sampling operation. A source image is decoded from features, then warped through the predicted deflection field to reconstruct the observed image.
+### Results & Comparison
 
-**5. Anomaly residual branch:** `residual = |I_obs - I_recon|`. This difference map isolates the substructure signal not explained by the smooth SIS potential. A compact CNN encoder converts it to a 128-dim feature vector.
-
-**6. Polar coordinate branch:** A differentiable polar transform maps the input to polar coordinates, exploiting the approximate circular symmetry of gravitational lensing. A separate CNN encoder produces a 128-dim polar feature vector.
-
-**7. Classifier:** The backbone feature (1536-dim), residual feature (128-dim), and polar feature (128-dim) are concatenated (1792-dim total) and passed through a two-layer MLP head with dropout.
-
-**Total parameters:** 22.7M (encoder: 10.7M, potential head: 7.4M, source decoder: 3.6M, residual branch: 32K, polar branch: 110K, classifier: 920K).
-
-### Model Pipeline
-
-![PINN Pipeline](Results_and_Images/PINNTaskVII_Pipeline.png)
-
-### Physics Losses
-
-The training objective combines classification loss with three physics-regularization terms, curriculum-ramped over 5 warmup epochs (physics weight scales from 0.1 to 1.0):
-
-| Loss Term | Mathematical Form | Physical Meaning |
-|---|---|---|
-| Poisson constraint | $\|\Delta \psi_{\text{resid}}\|^2$ | Subhalo convergence $\kappa_{\text{sub}}$ should be compact |
-| Curl-free constraint | $\| \partial_x \alpha_y - \partial_y \alpha_x \|^2$ | Deflection field must be irrotational |
-| Reconstruction | $\text{MSE}(I_{\text{recon}}, I_{\text{obs}})$ | Warped source must match observed image |
-
-### Training Configuration
-
-| Hyperparameter | Value |
-|---|---|
-| Optimizer | Adam (encoder lr=5e-5, physics heads lr=1e-4, weight decay=1e-4) |
-| Scheduler | CosineAnnealingLR (T_max=50, eta_min=1e-6) |
-| Gradient clipping | max_norm=1.0 |
-| Epochs | 50 |
-| Batch size | 32 |
-| Input size | 150x150 |
-| Physics warmup | 5 epochs |
-
-### Results
-
-| Split | Macro AUC |
-|---|---|
-| Internal test (10% holdout) | **0.9897** |
-| Provided val folder | **0.9893** |
-
-Best checkpoint: epoch 46, val AUC 0.9893.
+| Model | Mean Val-AUC | No Substructure | Sphere | Vortex |
+|---|---|---|---|---|
+| **Approach 1 (Baseline)** | **0.9928** | *Not recorded* | *Not recorded* | *Not recorded* |
+| Approach 2 (Adaptive) | 0.9902 | 0.9936 | 0.9831 | 0.9937 |
+| Approach 3 (Hybrid) | 0.9893 | 0.9913 | 0.9826 | 0.9941 |
 
 ### Comparison with Common Test Baseline
 
