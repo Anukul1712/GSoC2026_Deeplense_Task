@@ -6,7 +6,7 @@ This folder contains the results for the three PINN approaches developed for Tas
 
 | Model | Mean Val-AUC | No Substructure | Sphere | Vortex |
 |---|---|---|---|---|
-| **Approach 1 (Baseline)** | **0.9928** | *Pending* | *Pending* | *Pending* |
+| **Approach 1 (Baseline)** | **0.9933** | **0.9948** | **0.9884** | **0.9969** |
 | Approach 2 (Adaptive) | 0.9902 | 0.9936 | 0.9831 | 0.9937 |
 | Approach 3 (Hybrid) | 0.9893 | 0.9913 | 0.9826 | 0.9941 |
 

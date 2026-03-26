@@ -86,22 +86,21 @@ This approach introduces advanced inductive biases and optimization techniques t
 #### Approach 3: Hybrid Fusion PINN (EfficientNet-B3)
 *File: `PINN_TaskVII_Approach3.ipynb`*
 
-This model combines the "best of both worlds": strong deep learning backbones and explicit physics features.
-- **Backbone Upgrade:** Uses **EfficientNet-B3** instead of ResNet-18 for superior feature extraction capabilities.
-- **Hybrid Fusion:** Unlike the other approaches which may bottleneck through physics layers, this model's classifier sees the **Full Feature Concatenation**:
-  1.  Raw Backbone Features (Texture/Pattern)
-  2.  Physics Residual Features (Anomaly detection from reconstruction error)
-  3.  Polar Features (Symmetry)
-- **Result:** This fusion strategy yielded robust performance (AUC 0.9893) by allowing the network to rely on standard CNN patterns when the physics reconstruction was ambiguous.
+Formerly `PINNLensNet`, this approach hypothesizes that while physical constraints are crucial, the raw feature extraction power of modern architectures should not be discarded.
+- **Backbone Upgrade:** Utilizes the more powerful **EfficientNet-B3** (pretrained on ImageNet) compared to the ResNet-18 used in Approaches 1 and 2.
+- **Hybrid Feature Fusion:** Instead of relying solely on physical fields ($\alpha, \kappa$) for classification, this model concatenates **Three Feature Sets**:
+  1.  **Backbone Features (1536-dim):** Deep textural and semantic features.
+  2.  **Physics Features (256-dim):** Anomaly residuals and potential maps processed by a small CNN.
+  3.  **Polar Features (128-dim):** Symmetry-aware representations.
+- **Goal:** To combine the robustness of standard CNNs with the interpretability and constraints of PINNs.
 
 ![Approach3_Pipeline](Results_and_Images/PINN_Approach3_Pipeline.png)
 
 ### Results & Comparison
 
-
 | Model | Mean Val-AUC | No Substructure | Sphere | Vortex |
 |---|---|---|---|---|
-| **Approach 1 (Baseline)** | **0.9928** | *Not recorded* | *Not recorded* | *Not recorded* |
+| **Approach 1 (Baseline)** | **0.9933** | **0.9948** | **0.9884** | **0.9969** |
 | Approach 2 (Adaptive) | 0.9902 | 0.9936 | 0.9831 | 0.9937 |
 | Approach 3 (Hybrid) | 0.9893 | 0.9913 | 0.9826 | 0.9941 |
 
@@ -113,7 +112,15 @@ This model combines the "best of both worlds": strong deep learning backbones an
 | EfficientNet-B3(No-Physics) | 0.9963 | 0.9960 | 0.9941 | 0.9988 |
 | EfficientNet-B3 + Recon Loss | 0.9959 | 0.9956 | 0.9931 | 0.9989 |
 | EfficientNet-B3 + SIS Prior | 0.9958 | 09962 | 0.9926 | 0.9987 |
-| **PINNLensNet ** | **0.9897** | 0.9913 | 0.9826 | 0.9941 |
+
+### Inference & Conclusion for Task VII
+
+All three PINN approaches achieved high performance (>0.989 AUC), validating the effectiveness of embedding the gravitational lensing equation into the neural network.
+
+- **Simplicity Wins:** The **Baseline PINN (Approach 1)** outperformed the more complex architectures. This suggests that the fundamental "curl-free" constraint on the deflection field is the most high-yield physical prior for this dataset.
+- **Optimization vs. Complexity:** While Approach 2 and 3 introduced sophisticated features (Adaptive Loss, Hybrid Fusion), the added complexity may have made the optimization landscape harder to navigate, resulting in slightly lower validation scores compared to the cleaner baseline.
+- **Robustness:** The high performance across all three distinct architectures demonstrates that the core PINN formulation is robust.
+
 
 ---
 
