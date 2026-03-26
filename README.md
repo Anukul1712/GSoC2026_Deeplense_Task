@@ -142,9 +142,36 @@ Formerly `PINNLensNet`, this model aims for maximum Classification AUC by combin
 - **Backbone Upgrade:** Uses **EfficientNet-B3** instead of ResNet-18 for superior feature extraction capabilities.
 - **Hybrid Fusion:** Unlike the other approaches which may bottleneck through physics layers, this model's classifier sees the **Full Feature Concatenation**:
   1.  Raw Backbone Features (Texture/Pattern)
-  2.  Physics CNN Features (Mass distribution/Potentials)
+  2.  Physics Residual Features (Anomaly detection from reconstruction error)
   3.  Polar Features (Symmetry)
 - **Result:** This fusion strategy yielded robust performance (AUC 0.9893) by allowing the network to rely on standard CNN patterns when the physics reconstruction was ambiguous.
+
+```mermaid
+graph TD
+    Input(Input Image) --> Encoder[EfficientNet-B3 Encoder]
+    Encoder --> Feat[Backbone Features]
+    
+    subgraph Physics Branch
+        Feat --> PotHead[Potential Head]
+        PotHead --> Recon[Reconstruction]
+        Input --> Diff[Difference]
+        Recon --> Diff
+        Diff --> ResEnc[Residual Encoder]
+        ResEnc --> ResFeat[Residual Features]
+    end
+    
+    subgraph Polar Branch
+        Input --> PolTrans[Polar Transform]
+        PolTrans --> PolEnc[Polar Encoder]
+        PolEnc --> PolFeat[Polar Features]
+    end
+    
+    Feat --> Concat[Concatenate]
+    ResFeat --> Concat
+    PolFeat --> Concat
+    Concat --> Classifier[Classifier MLP]
+    Classifier --> Output[Class Probabilities]
+```
 
 ### Results & Comparison
 
