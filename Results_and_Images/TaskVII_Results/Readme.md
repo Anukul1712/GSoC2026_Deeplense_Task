@@ -10,6 +10,14 @@ This folder contains the results for the three PINN approaches developed for Tas
 | Approach 2 (Adaptive) | 0.9902 | 0.9936 | 0.9831 | 0.9937 |
 | Approach 3 (Hybrid) | 0.9893 | 0.9913 | 0.9826 | 0.9941 |
 
+### Inference & Conclusion for Task VII
+
+All three PINN approaches achieved high performance (>0.989 AUC), validating the effectiveness of embedding the gravitational lensing equation into the neural network.
+
+- **Simplicity Wins:** The **Baseline PINN (Approach 1)** outperformed the more complex architectures. This suggests that the fundamental "curl-free" constraint on the deflection field is the most high-yield physical prior for this dataset.
+- **Optimization vs. Complexity:** While Approach 2 and 3 introduced sophisticated features (Adaptive Loss, Hybrid Fusion), the added complexity may have made the optimization landscape harder to navigate, resulting in slightly lower validation scores compared to the cleaner baseline.
+- **Robustness:** The high performance across all three distinct architectures demonstrates that the core PINN formulation is robust.
+
 ---
 
 ## Approach 1: Baseline PINN (ResNet-18)
