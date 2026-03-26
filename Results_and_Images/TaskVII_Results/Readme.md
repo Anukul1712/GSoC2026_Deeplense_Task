@@ -12,7 +12,7 @@ This folder contains the results for the three PINN approaches developed for Tas
 
 ---
 
-## Approach 1: Baseline PINN (ResNet-18)
+## Approach 1: Baseline PINN (ResNet-18): PINN_TaskVII_Approach1.ipynb
 
 A "pure" physics-informed model enforcing the curl-free constraint ($\alpha = \nabla \psi$).
 
@@ -24,7 +24,7 @@ A "pure" physics-informed model enforcing the curl-free constraint ($\alpha = \n
 
 ---
 
-## Approach 2: Advanced Adaptive PINN
+## Approach 2: Advanced Adaptive PINN: PINN_TaskVII_Approach2.ipynb
 
 A sophisticated PINN using adaptive uncertainty weighting, polar coordinates, and cycle consistency.
 
@@ -36,9 +36,9 @@ A sophisticated PINN using adaptive uncertainty weighting, polar coordinates, an
 
 ---
 
-## Approach 3: Hybrid Fusion PINN (EfficientNet-B3)
+## Approach 3: Hybrid Fusion PINN (EfficientNet-B3): PINN_TaskVII_Approach3.ipynb
 
-Formerly `PINN_Classification50Epoch_TaskVII`. This model fuses EfficientNet backbone features with derived physics fields.
+This model fuses EfficientNet backbone features with derived physics fields.
 Tested with 30 and 50 epochs. Reconstructions were slightly improved with 50 epochs; significant AUC improvement.
 
 ### 50 Epochs (Final)
