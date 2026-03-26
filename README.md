@@ -71,33 +71,7 @@ This model establishes the fundamental "Structural PINN" architecture. Instead o
 - **Physics-by-Construction:** By driving $\alpha$ from a scalar potential, the deflection field is strictly curl-free by design, satisfying the necessary physical condition for gravitational lensing.
 - **Pipeline:** A ResNet-18 encoder predicts the potentials. A `LensWarp` layer uses the lensing equation $\beta = \theta - \alpha(\theta)$ to reconstruct the image. The classifier uses the encoder features augmented with scalar physics metrics (Stein radius $\theta_E$, mean deflection $|\alpha|$).
 
-```mermaid
-graph TD
-    Input(Input Image) --> Encoder[ResNet-18 Encoder]
-    Encoder --> Features[512-dim Features]
-    
-    subgraph Physics Head
-        Features --> PotHead[Potential Head]
-        PotHead --> Psi[Potential psi]
-        PotHead --> Alpha[Deflection alpha = grad psi]
-        PotHead --> Kappa[Convergence kappa]
-    end
-    
-    subgraph Reconstruction
-        Input --> SourceDec[Source Decoder]
-        Alpha --> Warper[Lens Warp]
-        SourceDec --> Warper
-        Warper --> Recon[Reconstructed Image]
-    end
-    
-    subgraph Classification
-        Features --> Concat[Concatenate]
-        Psi --> PhysicsScalars[Physics Scalars]
-        PhysicsScalars --> Concat
-        Concat --> MLP[Classifier MLP]
-        MLP --> Output[Class Probabilities]
-    end
-```
+![Approach1_Pipeline](Results_and_Images/PINN_Approach1_Pipeline.png)
 
 #### Approach 2: Advanced Adaptive PINN (ResNet-18)
 *File: `PINN_TaskVII_Approach2.ipynb`*
@@ -107,38 +81,12 @@ This approach introduces advanced inductive biases and optimization techniques t
 - **Polar Symmetry:** Recognizing that gravitational lenses are approximately circularly symmetric, a parallel **Polar Branch** transforms images into polar coordinates. This makes radial features (like Einstein rings) appear as linear features, which are easier for CNNs to process.
 - **Cycle Consistency:** Enforces a stricter physical constraint: `Delens(Lens(Source)) ≈ Source`.
 
-```mermaid
-graph TD
-    Input(Input Image) --> Encoder[ResNet-18 Encoder]
-    Encoder --> Features[Features]
-    
-    subgraph Polar Branch
-        Input --> PolarTrans[Polar Transform]
-        PolarTrans --> PolarEnc[Polar CNN]
-        PolarEnc --> PolarFeat[Polar Features]
-    end
-    
-    subgraph Physics Branch
-        Features --> PotHead[Potential Head]
-        PotHead --> PhyFields[alpha, kappa, curl]
-        PhyFields --> PhyCNN[Physics CNN]
-        PhyCNN --> PhyFeat[Physics Features]
-    end
-    
-    subgraph Optimization
-        PhyFields --> AdaptLoss[Adaptive Weighting of 7 Losses]
-    end
-
-    PolarFeat --> Concat[Concat]
-    PhyFeat --> Concat
-    Concat --> Classifier[Classifier]
-    Classifier --> Output[Class Probabilities]
-```
+![Approach2_Pipeline](Results_and_Images/PINN_Approach2_Pipeline.png)
 
 #### Approach 3: Hybrid Fusion PINN (EfficientNet-B3)
 *File: `PINN_TaskVII_Approach3.ipynb`*
 
-Formerly `PINNLensNet`, this model aims for maximum Classification AUC by combining the "best of both worlds": strong deep learning backbones and explicit physics features.
+This model combines the "best of both worlds": strong deep learning backbones and explicit physics features.
 - **Backbone Upgrade:** Uses **EfficientNet-B3** instead of ResNet-18 for superior feature extraction capabilities.
 - **Hybrid Fusion:** Unlike the other approaches which may bottleneck through physics layers, this model's classifier sees the **Full Feature Concatenation**:
   1.  Raw Backbone Features (Texture/Pattern)
@@ -146,32 +94,7 @@ Formerly `PINNLensNet`, this model aims for maximum Classification AUC by combin
   3.  Polar Features (Symmetry)
 - **Result:** This fusion strategy yielded robust performance (AUC 0.9893) by allowing the network to rely on standard CNN patterns when the physics reconstruction was ambiguous.
 
-```mermaid
-graph TD
-    Input(Input Image) --> Encoder[EfficientNet-B3 Encoder]
-    Encoder --> Feat[Backbone Features]
-    
-    subgraph Physics Branch
-        Feat --> PotHead[Potential Head]
-        PotHead --> Recon[Reconstruction]
-        Input --> Diff[Difference]
-        Recon --> Diff
-        Diff --> ResEnc[Residual Encoder]
-        ResEnc --> ResFeat[Residual Features]
-    end
-    
-    subgraph Polar Branch
-        Input --> PolTrans[Polar Transform]
-        PolTrans --> PolEnc[Polar Encoder]
-        PolEnc --> PolFeat[Polar Features]
-    end
-    
-    Feat --> Concat[Concatenate]
-    ResFeat --> Concat
-    PolFeat --> Concat
-    Concat --> Classifier[Classifier MLP]
-    Classifier --> Output[Class Probabilities]
-```
+![Approach3_Pipeline](Results_and_Images/PINN_Approach3_Pipeline.png)
 
 ### Results & Comparison
 
