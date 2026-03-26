@@ -167,8 +167,6 @@ The MAE was trained exclusively on `no_sub` samples without labels. The reconstr
 MAE reconstruction loss converged from 0.2636 (epoch 1) to 0.0023 (epoch 15).
 
 ### MAE Reconstruction Examples
-**Notice**: Sorry for the confusion, but the masked ratio in the examples below is 90 percent. During masked ratio testing, I forgot to update the image header and only noticed it later.
-
 ![MAE Reconstruction Example 1](Results_and_Images/MAE_Reconstruct_Ex1.png)
 ![MAE Reconstruction Example 2](Results_and_Images/MAE_Reconstruct_Ex2.png)
 ![MAE Reconstruction Example 3](Results_and_Images/MAE_Reconstruct_Ex3.png)
