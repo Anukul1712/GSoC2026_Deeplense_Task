@@ -240,7 +240,7 @@ Phase 1 val MSE: 1.94e-4 (epoch 1) -> 1.00e-4 (epoch 10). Phase 2 val MSE: furth
 |---|---|---|---|
 | Bicubic Baseline | 0.000100 | 0.9689 | 40.01 |
 | **ViT-SR (Ours)** | **0.000089** | **0.9758** | **40.49** |
-| Improvement | -11% | +0.0069 | +0.48 dB |
+| Improvement | 0.000011 | +0.0069 | +0.48 dB |
 
 The ViT-SR model consistently outperforms bicubic interpolation across all three metrics. The MAE pre-training provides patch-level spatial priors that transfer directly to the reconstruction objective, yielding sharper high-frequency detail in reconstructed lensing images.
 
