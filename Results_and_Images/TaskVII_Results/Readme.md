@@ -25,10 +25,11 @@ All three PINN approaches achieved high performance (>0.989 AUC), validating the
 A "pure" physics-informed model enforcing the curl-free constraint ($\alpha = \nabla \psi$).
 
 ### Results
-*(Placeholders for generated images)*
-- **Training Curves:** `Appr1_Training.png`
-- **ROC Curves:** `Appr1_ROC.png`
-- **Physics Visualization:** `Appr1_Physics.png`
+#### Training and ROC-AUC Curves
+![Training Curves for Approach 1](Approach1_Training_ValROCAUC.png)
+
+#### Reconstructed Images & Physics Fields
+![Reconstructed Images Approach 1](Approach1_Outputs.png)
 
 ---
 
