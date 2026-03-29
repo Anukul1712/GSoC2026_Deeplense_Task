@@ -23,8 +23,10 @@ GSoC2026_Deeplense_Task/
     ├── TaskVII_Results
     └── Other Images...
 ├── Deeplense_CommonTask_Comparison.ipynb    # Task I:   Multi-class classification (3 models compared)
-├── PINN_Classification50Epoch_TaskVII.ipynb # Task VII: Physics-informed neural network
-├── TaskIX_FoundationModel.ipynb             # Task IX.A & IX.B: MAE pre-training, classification, super-resolution
+├── PINN_TaskVII_Approach1.ipynb             # Task VII: Physics-informed neural network (Approach 1)
+├── PINN_TaskVII_Approach2.ipynb             # Task VII: Physics-informed neural network (Approach 2)
+├── PINN_TaskVII_Approach3.ipynb             # Task VII: Physics-informed neural network (Approach 3)
+├── MAE_TaskIX_Foundation.ipynb             # Task IX.A & IX.B: MAE pre-training, classification, super-resolution
 └── README.md
 ```
 
