@@ -72,6 +72,7 @@ This model establishes the fundamental "Structural PINN" architecture. Instead o
 - **Pipeline:** A ResNet-18 encoder predicts the potentials. A `LensWarp` layer uses the lensing equation $\beta = \theta - \alpha(\theta)$ to reconstruct the image. The classifier uses the encoder features augmented with scalar physics metrics (Stein radius $\theta_E$, mean deflection $|\alpha|$).
 
 ![Approach1_Pipeline](Results_and_Images/PINN_Approach1_Pipeline.png)
+![Approach1_Output](Results_and_Images/TaskVII_Results/Approach1_Outputs.png)
 
 #### Approach 2: Advanced Adaptive PINN (ResNet-18)
 *File: `PINN_TaskVII_Approach2.ipynb`*
